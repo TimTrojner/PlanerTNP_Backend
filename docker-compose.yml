@@ -7,3 +7,15 @@ services:
     container_name: planer_tnp_backend  # Set custom container name
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"  # Map host port to container port using APP_PORT
+    depends_on:
+      - mongodb  # Ensure MongoDB starts before the backend
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # Expose MongoDB's default port
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}  # Use credentials from .env file
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}  # Use credentials from .env file
+

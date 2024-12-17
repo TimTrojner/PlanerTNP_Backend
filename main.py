@@ -1,7 +1,7 @@
 import os
 
 import dns.resolver
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -13,7 +13,9 @@ from routes import auth_bp, schedule_bp, task_bp
 app = Flask(__name__)
 CORS(app)
 
-
+@app.route("/")
+def index():
+    return render_template('index.html', url=request.url)
 
 SWAGGER_URL = "/docs"
 API_URL = "/static/swagger/config.json"

@@ -212,8 +212,8 @@
             "description": "ID of the user to get",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "example": "67605f4ac5b0053d5b45735c"
             }
           }
         ],
@@ -261,8 +261,8 @@
             "description": "ID of the user to update",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "example": "67605f4ac5b0053d5b45735c"
             }
           }
         ],
@@ -360,8 +360,7 @@
             "description": "ID of the user to delete",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
@@ -415,8 +414,7 @@
             "description": "ID of the user to update",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
@@ -486,6 +484,38 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User data updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -549,7 +579,7 @@
         }
       }
     },
-    "/schedule/programs/{program_name/subjects": {
+    "/schedule/programs/{program_name}/subjects": {
       "description": "Get subjects by program name",
       "get": {
         "tags": [
@@ -564,7 +594,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "\"RACUNALNISTVO%2BIN%2BINFORMACIJSKE%2BTEHNOLOGIJE%3B%2BLetnik%2B1%3B%2BRIT%20VS%2B-%2BRACUNALNISTVO%2BIN%2BINFORMACIJSKE\""
+              "example": "RACUNALNISTVO IN INFORMACIJSKE TEHNOLOGIJE; Letnik 1; RIT VS - RACUNALNISTVO IN INFORMACIJSKE"
             }
           }
         ],
@@ -577,7 +607,7 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "example": "[MATEMATIKA I., PROGRAMIRANJE I., UVOD V RACUNALNISTVO]"
+                    "example": "[\"MATEMATIKA I\", \"PROGRAMIRANJE I\", \"SODOBNA PROGRAMSKA ORODJA\",  \"UVOD V RACUNALNISTVO\",  \"UVOD V SVETOVNI SPLET\"]"
                   }
                 }
               }
@@ -617,7 +647,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "\"RACUNALNISTVO%2BIN%2BINFORMACIJSKE%2BTEHNOLOGIJE%3B%2BLetnik%2B1%3B%2BRIT%20VS%2B-%2BRACUNALNISTVO%2BIN%2BINFORMACIJSKE\""
+              "example": "RACUNALNISTVO IN INFORMACIJSKE TEHNOLOGIJE; Letnik 1; RIT VS - RACUNALNISTVO IN INFORMACIJSKE"
             }
           },
           {
@@ -627,27 +657,25 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "MATEMATIKA%2BI"
+              "example": "MATEMATIKA I"
             }
           },
           {
             "name": "start_date",
             "in": "query",
-            "description": "Start date of the subject",
+            "description": "Start date of the subject (optional) [format: dd.mm.yyyy] example: 01.01.2025",
             "required": false,
             "schema": {
-              "type": "string",
-              "example": "01.10.2024"
+              "type": "string"
             }
           },
           {
             "name": "end_date",
             "in": "query",
-            "description": "End date of the subject",
+            "description": "End date of the subject (optional) [format: dd.mm.yyyy] example: 08.08.2025",
             "required": false,
             "schema": {
-              "type": "string",
-              "example": "1.02.2025"
+              "type": "string"
             }
           }
         ],
@@ -743,8 +771,8 @@
             "description": "ID of the user to get tasks",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "example": "6750a233b3caea3e7c2d6f5c"
             }
           }
         ],
@@ -754,29 +782,34 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string",
-                        "example": "Task1"
-                      },
-                      "color": {
-                        "type": "string",
-                        "example": "#1abc9c"
-                      },
-                      "startDateTime": {
-                        "type": "string",
-                        "example": "2024-10-01 08:00"
-                      },
-                      "endDateTime": {
-                        "type": "string",
-                        "example": "2024-10-01 09:30"
-                      },
-                      "_id": {
-                        "type": "string",
-                        "example": "6719817e3c027ff867e33542"
+                  "type": "object",
+                  "properties": {
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "color": {
+                            "type": "string"
+                          },
+                          "startDateTime": {
+                            "type": "string",
+                            "example": "2024-12-06T14:31"
+                          },
+                          "endDateTime": {
+                            "type": "string",
+                            "example": "2024-12-06T14:31"
+                          },
+                          "urgent": {
+                            "type": "boolean"
+                          },
+                          "_id": {
+                            "type": "string"
+                          }
+                        }
                       }
                     }
                   }
@@ -814,8 +847,8 @@
             "description": "ID of the user to create task",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "example": "6750a233b3caea3e7c2d6f5c"
             }
           }
         ],
@@ -889,6 +922,13 @@
                         "endDateTime": {
                           "type": "string",
                           "example": "2024-10-01 09:30"
+                        },
+                        "urgent": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "_id": {
+                          "type": "string"
                         }
                       }
                     }
@@ -930,8 +970,7 @@
             "description": "ID of the user to delete task",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           },
           {
@@ -986,14 +1025,43 @@
       "User": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 1
+          "_id": {
+            "type": "string"
           },
-          "name": {
-            "type": "string",
-            "example": "John"
+          "Username": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Password": {
+            "type": "string"
+          },
+          "Birthday": {
+            "type": "object",
+            "properties": {
+              "Day": {
+                "type": "string"
+              },
+              "Month": {
+                "type": "string"
+              }
+            }
+          },
+          "Country": {
+            "type": "string"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "Location": {
+            "type": "string"
+          },
+          "PhoneNumber": {
+            "type": "string"
           }
         }
       },

@@ -10,6 +10,8 @@ Run the following command to activate the virtual environment:
 - Linux/MacOS:
 ```bash
 source venv/bin/activate
+# disable with
+deactivate
 ```
 
 - Windows:

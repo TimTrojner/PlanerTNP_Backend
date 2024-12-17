@@ -1,0 +1,1075 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Flask API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/auth/login": {
+      "description": "Login to the app using email and password",
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login to the app",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Email": {
+                    "type": "string",
+                    "example": "aa@aa.com",
+                    "description": "Email of the user",
+                    "required": true
+                  },
+                  "Password": {
+                    "type": "string",
+                    "example": "06a9bf223fedf80a9d0da5f73f5c191a665bf4a0a4a3e608f2f9e7d5ff23959c",
+                    "description": "Hashed password of the user",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tasks": {
+                      "type": "array"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "_id": {
+                      "type": "string"
+                    },
+                    "Username": {
+                      "type": "string"
+                    },
+                    "Email": {
+                      "type": "string"
+                    },
+                    "Password": {
+                      "type": "string"
+                    },
+                    "Birthday": {
+                      "nullable": true,
+                      "type": "object",
+                      "properties": {
+                        "Day": {
+                          "type": "string"
+                        },
+                        "Month": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "Country": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "FirstName": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "LastName": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "Location": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "PhoneNumber": {
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid username or password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "description": "Register a new user",
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Email": {
+                    "type": "string",
+                    "example": "ff@ff.com",
+                    "description": "Email of the user",
+                    "required": true,
+                    "format": "email"
+                  },
+                  "Username": {
+                    "type": "string",
+                    "example": "ff",
+                    "description": "Username of the user",
+                    "required": true
+                  },
+                  "Password": {
+                    "type": "string",
+                    "example": "05a9bf223fedf80a9d0da5f73f5c191a665bf4a0a4a3e608f2f9e7d5ff23959c",
+                    "description": "Hashed password of the user",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Email": {
+                      "type": "string"
+                    },
+                    "Username": {
+                      "type": "string"
+                    },
+                    "Password": {
+                      "type": "string"
+                    },
+                    "_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username or email already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Username already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/{user_id}/get-profile": {
+      "description": "Get user by id",
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get user by id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to get",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/{user_id}/set-profile": {
+      "description": "Update user by id",
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Update user by id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "FirstName": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "LastName": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Location": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "PhoneNumber": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Country": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Birthday": {
+                    "type": "object",
+                    "properties": {
+                      "Day": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "Month": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Profile data updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/{user_id}": {
+      "description": "Delete user by id",
+      "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Delete user by id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/{user_id}/update-data": {
+      "description": "Update user data by id",
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Update user data by id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Email": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Username": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Password": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "FirstName": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "LastName": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Location": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "PhoneNumber": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Country": {
+                    "nullable": true,
+                    "type": "string",
+                    "example": ""
+                  },
+                  "Birthday": {
+                    "nullable": true,
+                    "type": "object",
+                    "properties": {
+                      "Day": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "Month": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+        }
+      }
+    },
+    "/schedule/upload-schedule": {
+      "description": "Upload schedule",
+      "post": {
+        "tags": [
+          "Schedule"
+        ],
+        "summary": "Upload schedule",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "example": "file base64",
+                    "description": "Schedule csv file",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Data has been saved to MongoDB"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid file format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedule/programs/{program_name/subjects": {
+      "description": "Get subjects by program name",
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "summary": "Get subjects by program name (array of subject names)",
+        "parameters": [
+          {
+            "name": "program_name",
+            "in": "path",
+            "description": "Name of the program to get subjects",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"RACUNALNISTVO%2BIN%2BINFORMACIJSKE%2BTEHNOLOGIJE%3B%2BLetnik%2B1%3B%2BRIT%20VS%2B-%2BRACUNALNISTVO%2BIN%2BINFORMACIJSKE\""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "[MATEMATIKA I., PROGRAMIRANJE I., UVOD V RACUNALNISTVO]"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Program not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "No subject found for program"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedule/programs/{program_name}/subjects/{subject_name}": {
+      "description": "Get subject by program name and subject name",
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "summary": "Get subject by program name and subject name",
+        "parameters": [
+          {
+            "name": "program_name",
+            "in": "path",
+            "description": "Name of the program to get subject",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "\"RACUNALNISTVO%2BIN%2BINFORMACIJSKE%2BTEHNOLOGIJE%3B%2BLetnik%2B1%3B%2BRIT%20VS%2B-%2BRACUNALNISTVO%2BIN%2BINFORMACIJSKE\""
+            }
+          },
+          {
+            "name": "subject_name",
+            "in": "path",
+            "description": "Name of the subject to get",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "MATEMATIKA%2BI"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Start date of the subject",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "01.10.2024"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "End date of the subject",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "1.02.2025"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Entry"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Subject not found in program or No schedule entries found for subject",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Subject not found in program"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedule/schedules/all": {
+      "description": "Get all schedules",
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "summary": "Get all transformed schedules",
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Task"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No schedules found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "No schedules found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/user/{user_id}/tasks": {
+      "description": "Get tasks by user id",
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Get tasks by user id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to get tasks",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Task1"
+                      },
+                      "color": {
+                        "type": "string",
+                        "example": "#1abc9c"
+                      },
+                      "startDateTime": {
+                        "type": "string",
+                        "example": "2024-10-01 08:00"
+                      },
+                      "endDateTime": {
+                        "type": "string",
+                        "example": "2024-10-01 09:30"
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "6719817e3c027ff867e33542"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No tasks found for user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "No tasks found for user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Add task",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to create task",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Task1",
+                    "description": "Name of the task",
+                    "required": true
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "#1abc9c",
+                    "description": "Color of the task",
+                    "required": true
+                  },
+                  "startDateTime": {
+                    "type": "string",
+                    "example": "2024-10-01 08:00",
+                    "description": "Start date and time of the task",
+                    "required": true
+                  },
+                  "endDateTime": {
+                    "type": "string",
+                    "example": "2024-10-01 09:30",
+                    "description": "End date and time of the task",
+                    "required": true
+                  },
+                  "urgent": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "Urgent task"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Task created successfully"
+                    },
+                    "task": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Task1"
+                        },
+                        "color": {
+                          "type": "string",
+                          "example": "#1abc9c"
+                        },
+                        "startDateTime": {
+                          "type": "string",
+                          "example": "2024-10-01 08:00"
+                        },
+                        "endDateTime": {
+                          "type": "string",
+                          "example": "2024-10-01 09:30"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/user/{user_id}/tasks/{task_id}": {
+      "description": "Delete user task by id",
+      "delete": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Delete task by id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to delete task",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "path",
+            "description": "ID of the task to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Task deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User or task not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          }
+        }
+      },
+      "Entry": {
+        "type": "object",
+        "properties": {
+          "Dan": {
+            "type": "string",
+            "example": "Torek"
+          },
+          "Datum": {
+            "type": "string",
+            "example": "01.10.2024"
+          },
+          "Ura": {
+            "type": "string",
+            "example": "08:00-09:30"
+          },
+          "Prostor": {
+            "type": "string",
+            "example": "G2-P1 ALFA, pritlicje"
+          },
+          "Izvajanje": {
+            "type": "string",
+            "example": "PR"
+          },
+          "Skupina": {
+            "type": "string",
+            "example": "RIT 1 VS"
+          },
+          "Izvajalec": {
+            "type": "string",
+            "example": "ALEKSANDRA TEPEH"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Task1"
+          },
+          "color": {
+            "type": "string",
+            "example": "#1abc9c"
+          },
+          "start_time": {
+            "type": "string",
+            "example": "2024-10-01 08:00"
+          },
+          "end_time": {
+            "type": "string",
+            "example": "2024-10-01 09:30"
+          }
+        }
+      },
+      "ProgramSubject": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "6719817e3c027ff867e33542"
+          },
+          "program": {
+            "type": "string",
+            "example": "RACUNALNISTVO IN INFORMACIJSKE TEHNOLOGIJE; Letnik 1; RIT VS - RACUNALNISTVO IN INFORMACIJSKE"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entry"
+            }
+          }
+        }
+      }
+    }
+  }
+}

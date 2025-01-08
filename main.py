@@ -17,6 +17,16 @@ CORS(app)
 def index():
     return render_template('index.html', url=request.url)
 
+@app.route("/bg-sync")
+def bg_sync():
+    print("Background sync")
+    return "Background sync"
+
+@app.route("/periodic")
+def periodic():
+    print("Periodic")
+    return "Periodic"
+
 SWAGGER_URL = "/docs"
 API_URL = "/static/swagger/config.json"
 

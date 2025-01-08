@@ -1,3 +1,4 @@
+import hashlib
 import random
 
 from db import db  # Use the MongoDB connection
@@ -99,7 +100,10 @@ def fetch_all_schedules_transformed():
                 continue  # Skip this entry if parsing fails
 
             # Randomly choose a color from the specified list
-            color = random.choice(colors)
+            # color = random.choice(colors)
+
+            color = "#" + hashlib.md5(predmet.encode()).hexdigest()[:6]
+
 
             # Append the transformed entry to the list
             all_tasks.append({

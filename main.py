@@ -98,4 +98,4 @@ app.register_blueprint(task_bp, url_prefix='/task')
 app_port = int(os.getenv('BACKEND_PORT', 1234))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=app_port)
+    app.run(debug=True, port=app_port, host="0.0.0.0",)

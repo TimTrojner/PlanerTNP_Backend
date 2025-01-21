@@ -4,26 +4,33 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
+
+# Set the download directory
+download_dir = os.path.abspath("./downloads")  # Define the download directory
+os.makedirs(download_dir, exist_ok=True)  # Ensure the directory exists
 
 # Set download directory
-download_dir = os.path.abspath("./downloads")
-chrome_options = webdriver.ChromeOptions()
-prefs = {
-    "download.default_directory": download_dir,
-    "download.prompt_for_download": False,
-    "download.directory_upgrade": True,
-    "safebrowsing.enabled": True
-}
-chrome_options.add_experimental_option("prefs", prefs)
-# Add headless mode for running without a display
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")  # Recommended for compatibility
-chrome_options.add_argument("--no-sandbox")  # Necessary for some servers
-chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent crashes in Docker environments
+firefox_profile_path = webdriver.FirefoxProfile()
+firefox_profile_path.set_preference("browser.download.folderList", 2)  # Use custom download directory
+firefox_profile_path.set_preference("browser.download.dir", download_dir)
+firefox_profile_path.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.ms-excel")
+firefox_profile_path.set_preference("browser.download.manager.showWhenStarting", False)
+
+gecko_service = Service("/usr/bin/geckodriver")
+# gecko_service = Service("/Users/timtr/geckodriver")
+
+# Configure Firefox options
+firefox_options = Options()
+firefox_options.profile = firefox_profile_path  # Assign profile to options
+firefox_options.add_argument("--headless")
+firefox_options.add_argument("--disable-gpu")
+firefox_options.add_argument("--no-sandbox")
 
 def init_driver():
     """Initialize the WebDriver and WebDriverWait."""
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Firefox(service=gecko_service, options=firefox_options)
     wait = WebDriverWait(driver, 10)
     return driver, wait
 

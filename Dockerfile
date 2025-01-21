@@ -10,20 +10,6 @@ COPY requirements.txt .
 # Install the dependencies listed in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Firefox, Geckodriver, and necessary dependencies
-RUN apt-get update && apt-get install -y \
-    firefox-esr \
-    wget \
-    unzip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install Geckodriver
-# RUN wget -q https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz \
-#     && tar -xvzf geckodriver-v0.33.0-linux64.tar.gz \
-#     && mv geckodriver /usr/bin/ \
-#     && rm geckodriver-v0.33.0-linux64.tar.gz
-
-
 # Install Firefox
 RUN apt-get update && apt-get install -y \
     firefox-esr \
@@ -31,10 +17,16 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Geckodriver (ARM version)
-RUN wget -q https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux-aarch64.tar.gz \
-    && tar -xvzf geckodriver-v0.35.0-linux-aarch64.tar.gz \
-    && mv geckodriver /usr/bin/
+# Install GeckoDriver (select architecture dynamically)
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "aarch64" ]; then \
+        wget -q https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux-aarch64.tar.gz; \
+    else \
+        wget -q https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux64.tar.gz; \
+    fi && \
+    tar -xvzf geckodriver-*.tar.gz && \
+    mv geckodriver /usr/bin/ && \
+    rm geckodriver-*.tar.gz
 
 
 # Set environment variable to use Firefox with Selenium

@@ -24,9 +24,9 @@ gecko_service = Service("/Users/timtr/geckodriver")
 # Configure Firefox options
 firefox_options = Options()
 firefox_options.profile = firefox_profile_path  # Assign profile to options
-firefox_options.add_argument("--headless")
-firefox_options.add_argument("--disable-gpu")
-firefox_options.add_argument("--no-sandbox")
+# firefox_options.add_argument("--headless")
+# firefox_options.add_argument("--disable-gpu")
+# firefox_options.add_argument("--no-sandbox")
 
 def init_driver():
     """Initialize the WebDriver and WebDriverWait."""
@@ -48,6 +48,8 @@ def get_select_options(wait, div_index):
 
 def select_option(wait, div_index, option_index):
     """Select an option by index."""
+
+    
     div_elements = wait.until(EC.presence_of_all_elements_located(
         (By.CSS_SELECTOR, "div.ui-selectonemenu.ui-widget.ui-state-default.ui-corner-all")
     ))
@@ -59,13 +61,14 @@ def select_option(wait, div_index, option_index):
         (By.CSS_SELECTOR, "ul.ui-selectonemenu-items.ui-selectonemenu-list.ui-widget-content.ui-widget.ui-corner-all.ui-helper-reset")
     ))
     
-    li_items = ul_elements[2].find_elements(By.TAG_NAME, "li")
+    if (div_index == 3):
+        div_index = 14
 
-    print("===============")
-    for item in li_items:
-        print(item.get_attribute('innerHTML'))
-    print("===============")
-    
+    if (div_index == 4):
+        div_index = 15
+
+    li_items = ul_elements[div_index].find_elements(By.TAG_NAME, "li")
+
     option_element = li_items[option_index]
     option_element.click()
 
@@ -81,18 +84,17 @@ def download_excel(driver, wait, program_index, year_index, module_index):
     select_option(wait, div_index=2, option_index=program_index)
     old_content = driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML")
     wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML") != old_content)
-    time.sleep(5)
     select_option(wait, div_index=3, option_index=year_index)
     old_content = driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML")
     wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML") != old_content)
     select_option(wait, div_index=4, option_index=module_index)
-
     # Click download buttons
     buttons = wait.until(EC.presence_of_all_elements_located(
         (By.CSS_SELECTOR, "button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only")
     ))
-    buttons[0].click()
     time.sleep(1)
+    buttons[0].click()
+    print(buttons[0].get_attribute("outerHTML"));
     buttons = wait.until(EC.presence_of_all_elements_located(
         (By.CSS_SELECTOR, "button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only")
     ))

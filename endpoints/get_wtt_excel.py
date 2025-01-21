@@ -18,15 +18,15 @@ firefox_profile_path.set_preference("browser.download.dir", download_dir)
 firefox_profile_path.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.ms-excel")
 firefox_profile_path.set_preference("browser.download.manager.showWhenStarting", False)
 
-gecko_service = Service("/usr/bin/geckodriver")
-# gecko_service = Service("/Users/timtr/geckodriver")
+# gecko_service = Service("/usr/bin/geckodriver")
+gecko_service = Service("/Users/timtr/geckodriver")
 
 # Configure Firefox options
 firefox_options = Options()
 firefox_options.profile = firefox_profile_path  # Assign profile to options
-firefox_options.add_argument("--headless")
-firefox_options.add_argument("--disable-gpu")
-firefox_options.add_argument("--no-sandbox")
+# firefox_options.add_argument("--headless")
+# firefox_options.add_argument("--disable-gpu")
+# firefox_options.add_argument("--no-sandbox")
 
 def init_driver():
     """Initialize the WebDriver and WebDriverWait."""
@@ -48,9 +48,23 @@ def get_select_options(wait, div_index):
 
 def select_option(wait, div_index, option_index):
     """Select an option by index."""
-    select_element, options_text = get_select_options(wait, div_index)
-    select_element.find_elements(By.TAG_NAME, "option")[option_index].click()
-    return options_text[option_index - 1]
+    div_elements = wait.until(EC.presence_of_all_elements_located(
+        (By.CSS_SELECTOR, "div.ui-selectonemenu.ui-widget.ui-state-default.ui-corner-all")
+    ))
+    
+    dropdown_element = div_elements[div_index]
+    dropdown_element.click()
+    
+    ul_elements = wait.until(EC.presence_of_all_elements_located(
+        (By.CSS_SELECTOR, "ul.ui-selectonemenu-items.ui-selectonemenu-list.ui-widget-content.ui-widget.ui-corner-all.ui-helper-reset")
+    ))
+    
+    li_items = ul_elements[2].find_elements(By.TAG_NAME, "li")
+    
+    option_element = li_items[option_index]
+    option_element.click()
+
+    return option_element.text
 
 def download_excel(driver, wait, program_index, year_index, module_index):
     """Select program, year, module and download the Excel file."""

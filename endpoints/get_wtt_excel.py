@@ -24,9 +24,9 @@ gecko_service = Service("/Users/timtr/geckodriver")
 # Configure Firefox options
 firefox_options = Options()
 firefox_options.profile = firefox_profile_path  # Assign profile to options
-# firefox_options.add_argument("--headless")
-# firefox_options.add_argument("--disable-gpu")
-# firefox_options.add_argument("--no-sandbox")
+firefox_options.add_argument("--headless")
+firefox_options.add_argument("--disable-gpu")
+firefox_options.add_argument("--no-sandbox")
 
 def init_driver():
     """Initialize the WebDriver and WebDriverWait."""
@@ -60,6 +60,11 @@ def select_option(wait, div_index, option_index):
     ))
     
     li_items = ul_elements[2].find_elements(By.TAG_NAME, "li")
+
+    print("===============")
+    for item in li_items:
+        print(item.get_attribute('innerHTML'))
+    print("===============")
     
     option_element = li_items[option_index]
     option_element.click()
@@ -76,6 +81,7 @@ def download_excel(driver, wait, program_index, year_index, module_index):
     select_option(wait, div_index=2, option_index=program_index)
     old_content = driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML")
     wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML") != old_content)
+    time.sleep(5)
     select_option(wait, div_index=3, option_index=year_index)
     old_content = driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML")
     wait.until(lambda driver: driver.find_element(By.CSS_SELECTOR, "tbody").get_attribute("innerHTML") != old_content)

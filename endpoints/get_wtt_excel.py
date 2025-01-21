@@ -24,9 +24,9 @@ gecko_service = Service("/Users/timtr/geckodriver")
 # Configure Firefox options
 firefox_options = Options()
 firefox_options.profile = firefox_profile_path  # Assign profile to options
-# firefox_options.add_argument("--headless")
-# firefox_options.add_argument("--disable-gpu")
-# firefox_options.add_argument("--no-sandbox")
+firefox_options.add_argument("--headless")
+firefox_options.add_argument("--disable-gpu")
+firefox_options.add_argument("--no-sandbox")
 
 def init_driver():
     """Initialize the WebDriver and WebDriverWait."""
@@ -94,7 +94,6 @@ def download_excel(driver, wait, program_index, year_index, module_index):
     ))
     time.sleep(1)
     buttons[0].click()
-    print(buttons[0].get_attribute("outerHTML"));
     buttons = wait.until(EC.presence_of_all_elements_located(
         (By.CSS_SELECTOR, "button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only")
     ))

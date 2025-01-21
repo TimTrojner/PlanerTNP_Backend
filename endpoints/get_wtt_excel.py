@@ -18,8 +18,7 @@ firefox_profile_path.set_preference("browser.download.dir", download_dir)
 firefox_profile_path.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.ms-excel")
 firefox_profile_path.set_preference("browser.download.manager.showWhenStarting", False)
 
-# gecko_service = Service("/usr/bin/geckodriver")
-gecko_service = Service("/Users/timtr/geckodriver")
+gecko_service = Service("/usr/bin/geckodriver")
 
 # Configure Firefox options
 firefox_options = Options()
